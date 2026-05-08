@@ -22,8 +22,7 @@ eastWall = [[1 for _ in range(COLS)] for _ in range(ROWS)]
 
 visited = [[False for _ in range(COLS)] for _ in range(ROWS)]
 
-# BONUS:
-# Start and end inside maze interior
+
 start = (
     random.randint(1, ROWS - 2),
     random.randint(1, COLS - 2)
@@ -42,14 +41,14 @@ while end == start:
 
 dead_cells = set()
 
-# OpenGL setup
+
 glMatrixMode(GL_PROJECTION)
 glLoadIdentity()
 glOrtho(0, COLS, 0, ROWS, -1, 1)
 
 glMatrixMode(GL_MODELVIEW)
 
-# Maze generation state
+
 stack = []
 
 current_row = random.randint(0, ROWS - 1)
@@ -59,7 +58,7 @@ visited[current_row][current_col] = True
 
 maze_finished = False
 
-# Solver state
+
 solver_stack = []
 solver_visited = [[False for _ in range(COLS)] for _ in range(ROWS)]
 
@@ -87,25 +86,25 @@ def get_neighbors(r, c):
 
 def remove_walls(r1, c1, r2, c2):
 
-    # Horizontal movement
+   
     if r1 == r2:
 
         # Move right
         if c1 < c2:
             eastWall[r1][c1] = 0
 
-        # Move left
+       
         else:
             eastWall[r2][c2] = 0
 
-    # Vertical movement
+   
     elif c1 == c2:
 
-        # Move up
+      
         if r1 < r2:
             northWall[r1][c1] = 0
 
-        # Move down
+        
         else:
             northWall[r2][c2] = 0
 
@@ -130,7 +129,7 @@ def generate_maze_step():
             next_cell[1]
         )
 
-        # BONUS:
+        
         # Randomly break extra walls (1 in 20 chance)
         if random.randint(1, 20) == 1:
 
@@ -175,19 +174,19 @@ def generate_maze_step():
 
 def can_move(r1, c1, r2, c2):
 
-    # Moving right
+    
     if c2 > c1:
         return eastWall[r1][c1] == 0
 
-    # Moving left
+   
     if c2 < c1:
         return eastWall[r1][c2] == 0
 
-    # Moving up
+    
     if r2 > r1:
         return northWall[r1][c1] == 0
 
-    # Moving down
+    
     if r2 < r1:
         return northWall[r2][c2] == 0
 
@@ -220,11 +219,11 @@ def solve_step():
     global solver_row
     global solver_col
 
-    # Wait until maze generation finishes
+    
     if not maze_finished:
         return
 
-    # Stop when reaching end
+    
     if (solver_row, solver_col) == end:
         return
 
@@ -232,7 +231,7 @@ def solve_step():
 
     solver_visited[solver_row][solver_col] = True
 
-    # Move forward
+    
     if moves:
 
         next_cell = random.choice(moves)
@@ -241,7 +240,7 @@ def solve_step():
 
         solver_row, solver_col = next_cell
 
-    # Dead end → backtrack
+    
     else:
 
         dead_cells.add((solver_row, solver_col))
@@ -255,7 +254,7 @@ def draw_solver():
 
     glBegin(GL_POINTS)
 
-    # Blue dead ends
+    
     glColor3f(0, 0, 1)
 
     for r, c in dead_cells:
@@ -286,25 +285,25 @@ def draw_maze():
             x = j * CELL_SIZE
             y = i * CELL_SIZE
 
-            # North wall
+           
             if northWall[i][j] == 1:
 
                 glVertex2f(x, y + CELL_SIZE)
                 glVertex2f(x + CELL_SIZE, y + CELL_SIZE)
 
-            # East wall
+           
             if eastWall[i][j] == 1:
 
                 glVertex2f(x + CELL_SIZE, y)
                 glVertex2f(x + CELL_SIZE, y + CELL_SIZE)
 
-    # Left border
+    
     for i in range(ROWS):
 
         glVertex2f(0, i * CELL_SIZE)
         glVertex2f(0, (i + 1) * CELL_SIZE)
 
-    # Bottom border
+    
     for j in range(COLS):
 
         glVertex2f(j * CELL_SIZE, 0)
@@ -312,7 +311,7 @@ def draw_maze():
 
     glEnd()
 
-# Main loop
+
 while True:
 
     for event in pygame.event.get():
