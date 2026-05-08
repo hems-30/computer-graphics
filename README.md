@@ -116,7 +116,7 @@ computer-graphics/
 - Dead-end visualization
 - Interior start and end positions
 - Bonus cycle generation
-```
+
  # Loom Recording
 
 https://www.loom.com/share/d9e4cdcbe91d41e7876c54b0c06551f4
